@@ -13,7 +13,6 @@ import { ChevronLeft, ChevronRight, CreditCard } from "lucide-react";
 import { Invoice, InvoiceFilters as Filters } from "@/lib/types";
 import { invoices } from "@/lib/mockData";
 import { formatCurrency } from "@/lib/format";
-import { ReviewStatusBadge, LockStatusBadge } from "@/components/StatusBadge";
 import InvoiceFilters from "@/components/InvoiceFilters";
 import CreditRequestDialog from "@/components/CreditRequestDialog";
 
@@ -83,23 +82,19 @@ export default function InvoiceTable() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[80px]">ID</TableHead>
-                  <TableHead>Sales Order</TableHead>
+                  <TableHead className="w-[80px]">Order ID</TableHead>
+                  <TableHead>Sales Order Name</TableHead>
                   <TableHead>Advertiser</TableHead>
                   <TableHead>Billing Account</TableHead>
-                  <TableHead>PO Number</TableHead>
+                  <TableHead>Billing Period</TableHead>
                   <TableHead className="text-right">Net Amount</TableHead>
-                  <TableHead>Review</TableHead>
-                  <TableHead>Lock</TableHead>
-                  <TableHead>Assigned To</TableHead>
-                  <TableHead>Period</TableHead>
                   <TableHead className="w-[100px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {pageData.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={11} className="h-24 text-center text-muted-foreground">
+                    <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                       No invoices found matching your filters.
                     </TableCell>
                   </TableRow>
@@ -107,29 +102,21 @@ export default function InvoiceTable() {
                   pageData.map((inv) => (
                     <TableRow key={inv.id}>
                       <TableCell className="font-mono text-xs">{inv.salesOrderId}</TableCell>
-                      <TableCell className="max-w-[250px] truncate font-medium" title={inv.salesOrderName}>
+                      <TableCell className="max-w-[300px] truncate font-medium" title={inv.salesOrderName}>
                         {inv.salesOrderName}
                       </TableCell>
                       <TableCell>{inv.primaryAdvertiserName}</TableCell>
                       <TableCell>{inv.billingAccountName}</TableCell>
-                      <TableCell className="font-mono text-xs">{inv.externalPoNumber}</TableCell>
+                      <TableCell>{inv.billingPeriodName}</TableCell>
                       <TableCell className="text-right font-medium">
                         {formatCurrency(inv.netInvoiceAmount)}
                       </TableCell>
-                      <TableCell>
-                        <ReviewStatusBadge status={inv.reviewStatus} />
-                      </TableCell>
-                      <TableCell>
-                        <LockStatusBadge status={inv.invoiceLockStatus} />
-                      </TableCell>
-                      <TableCell>{inv.assignedTo}</TableCell>
-                      <TableCell>{inv.billingPeriodName}</TableCell>
                       <TableCell>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => setCreditInvoice(inv)}
-                          className="text-xs"
+                          className="text-xs transition-all duration-200 hover:bg-red-500 hover:text-white hover:border-red-500 hover:scale-105"
                         >
                           <CreditCard className="h-3.5 w-3.5 mr-1" />
                           Credit
