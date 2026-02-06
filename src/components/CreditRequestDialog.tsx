@@ -112,11 +112,12 @@ export default function CreditRequestDialog({ invoice, onClose }: CreditRequestD
             </DialogHeader>
 
             <div className="space-y-3 py-4">
-              <div className="rounded-lg bg-green-50 border border-green-200 p-4 space-y-2">
-                <p className="font-medium text-green-800">Request ID: {requestId}</p>
-                <p className="text-sm text-green-700">
-                  An Asana task has been created in the "Finance - Credit Requests" project
-                  and an email notification has been sent to finance@futureplc.com.
+              <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 space-y-2">
+                <p className="font-medium text-amber-800">DEMO MODE - Request ID: {requestId}</p>
+                <p className="text-sm text-amber-700">
+                  This is a prototype. No Asana task was created and no email was sent.
+                  In production, this will create a task in "Finance - Credit Requests"
+                  and notify finance@futureplc.com.
                 </p>
               </div>
 
