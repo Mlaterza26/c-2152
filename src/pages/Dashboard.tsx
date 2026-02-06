@@ -12,10 +12,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import StatsCards from "@/components/StatsCards";
-import { ReviewStatusBadge } from "@/components/StatusBadge";
-import { RequestStatusBadge } from "@/components/StatusBadge";
+import { ReviewStatusBadge, RequestStatusBadge } from "@/components/StatusBadge";
 import { invoices, creditRequests } from "@/lib/mockData";
-import { formatCurrency, formatDateTime } from "@/lib/format";
+import { formatCurrency } from "@/lib/format";
 import { DashboardStats } from "@/lib/types";
 
 export default function Dashboard() {
@@ -47,7 +46,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-base">Recent Invoices</CardTitle>
-            <Link to="/invoices">
+            <Link to="/team/client-success/revenue-credit">
               <Button variant="ghost" size="sm">
                 View all <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
