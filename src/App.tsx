@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppSidebar from "@/components/AppSidebar";
 import AppHeader from "@/components/AppHeader";
 import Index from "./pages/Index";
-import Invoices from "./pages/Invoices";
+import TeamWorkflows from "./pages/TeamWorkflows";
+import RevenueCreditWorkflow from "./pages/RevenueCreditWorkflow";
 import Requests from "./pages/Requests";
 import NotFound from "./pages/NotFound";
 
@@ -26,7 +27,8 @@ const App = () => (
               <div className="max-w-screen-2xl mx-auto">
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  <Route path="/invoices" element={<Invoices />} />
+                  <Route path="/team/:teamId" element={<TeamWorkflows />} />
+                  <Route path="/team/client-success/revenue-credit" element={<RevenueCreditWorkflow />} />
                   <Route path="/requests" element={<Requests />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
