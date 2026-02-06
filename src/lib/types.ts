@@ -12,6 +12,14 @@ export interface Invoice {
   billingPeriodName: string;
 }
 
+export interface LineItem {
+  lineItemId: string;
+  lineItemName: string;
+  product: string;
+  netAmount: number; // in cents
+  grossAmount: number; // in cents
+}
+
 export interface CreditRequest {
   id: string;
   invoiceId: string;

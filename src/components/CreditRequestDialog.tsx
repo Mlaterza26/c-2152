@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,14 +7,26 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { Invoice } from "@/lib/types";
+import { Invoice, LineItem } from "@/lib/types";
+import { lineItemsByInvoice } from "@/lib/mockData";
 import { formatCurrency } from "@/lib/format";
 import { CheckCircle, Loader2 } from "lucide-react";
+
+interface LineItemRevision {
+  revisedNetAmount: string;
+  revisedUnits: string;
+}
 
 interface CreditRequestDialogProps {
   invoice: Invoice | null;
@@ -22,45 +34,53 @@ interface CreditRequestDialogProps {
 }
 
 export default function CreditRequestDialog({ invoice, onClose }: CreditRequestDialogProps) {
-  const [creditAmount, setCreditAmount] = useState("");
-  const [reason, setReason] = useState("");
+  const [revisions, setRevisions] = useState<Record<string, LineItemRevision>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [requestId, setRequestId] = useState("");
   const { toast } = useToast();
 
+  const lineItems: LineItem[] = useMemo(() => {
+    if (!invoice) return [];
+    return lineItemsByInvoice[invoice.id] || [];
+  }, [invoice]);
+
   function handleClose() {
-    setCreditAmount("");
-    setReason("");
+    setRevisions({});
     setSubmitting(false);
     setSubmitted(false);
     setRequestId("");
     onClose();
   }
 
-  async function handleSubmit() {
-    if (!creditAmount || !reason) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in both Credit Amount and Reason.",
-        variant: "destructive",
-      });
-      return;
-    }
+  function updateRevision(lineItemId: string, field: keyof LineItemRevision, value: string) {
+    setRevisions((prev) => ({
+      ...prev,
+      [lineItemId]: {
+        ...prev[lineItemId],
+        [field]: value,
+      },
+    }));
+  }
 
-    const amountCents = Math.round(parseFloat(creditAmount) * 100);
-    if (isNaN(amountCents) || amountCents <= 0) {
+  const revisedLineItems = useMemo(() => {
+    return lineItems.filter((li) => {
+      const rev = revisions[li.lineItemId];
+      return rev && (rev.revisedNetAmount || rev.revisedUnits);
+    });
+  }, [lineItems, revisions]);
+
+  async function handleSubmit() {
+    if (revisedLineItems.length === 0) {
       toast({
-        title: "Invalid amount",
-        description: "Please enter a valid credit amount.",
+        title: "No revisions entered",
+        description: "Please fill in Revised Net Amount or Revised Units for at least one line item.",
         variant: "destructive",
       });
       return;
     }
 
     setSubmitting(true);
-
-    // Simulate API call - in production this would POST to /api/workflows/credit-request
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const newId = `CR-${String(Math.floor(Math.random() * 9000) + 1000)}`;
@@ -78,7 +98,7 @@ export default function CreditRequestDialog({ invoice, onClose }: CreditRequestD
 
   return (
     <Dialog open={!!invoice} onOpenChange={() => handleClose()}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col">
         {submitted ? (
           <>
             <DialogHeader>
@@ -103,8 +123,37 @@ export default function CreditRequestDialog({ invoice, onClose }: CreditRequestD
               <div className="text-sm text-muted-foreground space-y-1">
                 <p><span className="font-medium">Invoice:</span> {invoice.salesOrderName}</p>
                 <p><span className="font-medium">Advertiser:</span> {invoice.primaryAdvertiserName}</p>
-                <p><span className="font-medium">Credit Amount:</span> ${creditAmount}</p>
-                <p><span className="font-medium">Reason:</span> {reason}</p>
+                <p><span className="font-medium">Line items revised:</span> {revisedLineItems.length}</p>
+              </div>
+
+              <div className="rounded-md border overflow-auto max-h-48">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Line Item</TableHead>
+                      <TableHead className="text-right">Original Net</TableHead>
+                      <TableHead className="text-right">Revised Net</TableHead>
+                      <TableHead className="text-right">Revised Units</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {revisedLineItems.map((li) => {
+                      const rev = revisions[li.lineItemId];
+                      return (
+                        <TableRow key={li.lineItemId}>
+                          <TableCell className="text-sm">{li.lineItemName}</TableCell>
+                          <TableCell className="text-right text-sm">{formatCurrency(li.netAmount)}</TableCell>
+                          <TableCell className="text-right text-sm font-medium">
+                            {rev?.revisedNetAmount ? `$${rev.revisedNetAmount}` : "-"}
+                          </TableCell>
+                          <TableCell className="text-right text-sm font-medium">
+                            {rev?.revisedUnits || "-"}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
               </div>
             </div>
 
@@ -117,45 +166,76 @@ export default function CreditRequestDialog({ invoice, onClose }: CreditRequestD
             <DialogHeader>
               <DialogTitle>Request Credit Revision</DialogTitle>
               <DialogDescription>
-                Submit a credit request for this invoice. Finance will be notified and process in Operative.One.
+                Review the line items below and enter revised amounts for the items that need credit adjustment.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-4 py-4">
-              <div className="rounded-lg bg-muted p-3 space-y-1 text-sm">
+            <div className="space-y-4 py-2 flex-1 overflow-hidden flex flex-col">
+              <div className="rounded-lg bg-muted p-3 space-y-1 text-sm shrink-0">
                 <p><span className="font-medium">Order:</span> {invoice.salesOrderName}</p>
-                <p><span className="font-medium">Advertiser:</span> {invoice.primaryAdvertiserName}</p>
-                <p><span className="font-medium">Account:</span> {invoice.billingAccountName}</p>
-                <p><span className="font-medium">Invoice Amount:</span> {formatCurrency(invoice.netInvoiceAmount)}</p>
-                <p><span className="font-medium">Period:</span> {invoice.billingPeriodName}</p>
+                <p><span className="font-medium">Advertiser:</span> {invoice.primaryAdvertiserName} &middot; <span className="font-medium">Account:</span> {invoice.billingAccountName}</p>
+                <p><span className="font-medium">Invoice Amount:</span> {formatCurrency(invoice.netInvoiceAmount)} &middot; <span className="font-medium">Period:</span> {invoice.billingPeriodName}</p>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="credit-amount">Credit Amount ($)</Label>
-                <Input
-                  id="credit-amount"
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  placeholder="0.00"
-                  value={creditAmount}
-                  onChange={(e) => setCreditAmount(e.target.value)}
-                />
+              <div className="rounded-md border overflow-auto flex-1">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[90px]">Line Item ID</TableHead>
+                      <TableHead>Line Item Name</TableHead>
+                      <TableHead>Product</TableHead>
+                      <TableHead className="text-right">Net Amount</TableHead>
+                      <TableHead className="text-right">Gross Amount</TableHead>
+                      <TableHead className="text-right w-[140px]">Revised Net Amount</TableHead>
+                      <TableHead className="text-right w-[120px]">Revised Units</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {lineItems.map((li) => (
+                      <TableRow key={li.lineItemId}>
+                        <TableCell className="font-mono text-xs">{li.lineItemId}</TableCell>
+                        <TableCell className="text-sm max-w-[200px] truncate" title={li.lineItemName}>
+                          {li.lineItemName}
+                        </TableCell>
+                        <TableCell className="text-sm">{li.product}</TableCell>
+                        <TableCell className="text-right text-sm">{formatCurrency(li.netAmount)}</TableCell>
+                        <TableCell className="text-right text-sm">{formatCurrency(li.grossAmount)}</TableCell>
+                        <TableCell className="text-right">
+                          <Input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            className="h-8 text-right text-sm w-[120px] ml-auto"
+                            value={revisions[li.lineItemId]?.revisedNetAmount || ""}
+                            onChange={(e) => updateRevision(li.lineItemId, "revisedNetAmount", e.target.value)}
+                          />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Input
+                            type="number"
+                            min="0"
+                            step="1"
+                            placeholder="0"
+                            className="h-8 text-right text-sm w-[100px] ml-auto"
+                            value={revisions[li.lineItemId]?.revisedUnits || ""}
+                            onChange={(e) => updateRevision(li.lineItemId, "revisedUnits", e.target.value)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="reason">Reason</Label>
-                <Textarea
-                  id="reason"
-                  placeholder="Describe why this credit is needed..."
-                  rows={3}
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                />
-              </div>
+              {revisedLineItems.length > 0 && (
+                <p className="text-sm text-muted-foreground shrink-0">
+                  {revisedLineItems.length} line item{revisedLineItems.length !== 1 ? "s" : ""} will be included in this request.
+                </p>
+              )}
             </div>
 
-            <DialogFooter className="gap-2">
+            <DialogFooter className="gap-2 shrink-0">
               <Button variant="outline" onClick={handleClose}>Cancel</Button>
               <Button onClick={handleSubmit} disabled={submitting}>
                 {submitting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}

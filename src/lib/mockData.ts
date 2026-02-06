@@ -1,4 +1,4 @@
-import { Invoice, CreditRequest, WorkflowConfig } from "./types";
+import { Invoice, LineItem, CreditRequest, WorkflowConfig } from "./types";
 
 export const invoices: Invoice[] = [
   {
@@ -262,6 +262,101 @@ export const invoices: Invoice[] = [
     billingPeriodName: "December-2024",
   },
 ];
+
+export const lineItemsByInvoice: Record<string, LineItem[]> = {
+  "INV-001": [
+    { lineItemId: "LI-001-A", lineItemName: "Holiday Be Love - Display 300x250", product: "Display Standard", netAmount: 1200000, grossAmount: 1440000 },
+    { lineItemId: "LI-001-B", lineItemName: "Holiday Be Love - Display 728x90", product: "Display Standard", netAmount: 860100, grossAmount: 1032120 },
+    { lineItemId: "LI-001-C", lineItemName: "Holiday Be Love - Native Content", product: "Native Article", netAmount: 900000, grossAmount: 1080000 },
+  ],
+  "INV-002": [
+    { lineItemId: "LI-002-A", lineItemName: "Holiday Sprint - Programmatic Display", product: "Programmatic Display", netAmount: 2200000, grossAmount: 2640000 },
+    { lineItemId: "LI-002-B", lineItemName: "Holiday Sprint - Programmatic Video", product: "Programmatic Video", netAmount: 3220000, grossAmount: 3864000 },
+  ],
+  "INV-003": [
+    { lineItemId: "LI-003-A", lineItemName: "CES Launch - Takeover Package", product: "Homepage Takeover", netAmount: 4500000, grossAmount: 5400000 },
+    { lineItemId: "LI-003-B", lineItemName: "CES Launch - Video Pre-roll", product: "Video Pre-roll", netAmount: 2500000, grossAmount: 3000000 },
+    { lineItemId: "LI-003-C", lineItemName: "CES Launch - Newsletter Sponsorship", product: "Newsletter", netAmount: 1750000, grossAmount: 2100000 },
+  ],
+  "INV-004": [
+    { lineItemId: "LI-004-A", lineItemName: "Back to School - Programmatic Display", product: "Programmatic Display", netAmount: 5000000, grossAmount: 6000000 },
+    { lineItemId: "LI-004-B", lineItemName: "Back to School - Programmatic Native", product: "Programmatic Native", netAmount: 4500000, grossAmount: 5400000 },
+    { lineItemId: "LI-004-C", lineItemName: "Back to School - Social Amplification", product: "Social", netAmount: 2800000, grossAmount: 3360000 },
+  ],
+  "INV-005": [
+    { lineItemId: "LI-005-A", lineItemName: "Prime Day - Display ROS", product: "Display Standard", netAmount: 1500000, grossAmount: 1800000 },
+    { lineItemId: "LI-005-B", lineItemName: "Prime Day - Sponsored Content", product: "Sponsored Content", netAmount: 2600000, grossAmount: 3120000 },
+  ],
+  "INV-006": [
+    { lineItemId: "LI-006-A", lineItemName: "Spring Campaign - Programmatic Display", product: "Programmatic Display", netAmount: 3000000, grossAmount: 3600000 },
+    { lineItemId: "LI-006-B", lineItemName: "Spring Campaign - Programmatic Video", product: "Programmatic Video", netAmount: 2280000, grossAmount: 2736000 },
+    { lineItemId: "LI-006-C", lineItemName: "Spring Campaign - Audience Extension", product: "Audience Extension", netAmount: 1500000, grossAmount: 1800000 },
+  ],
+  "INV-007": [
+    { lineItemId: "LI-007-A", lineItemName: "Surface Launch - Homepage Takeover", product: "Homepage Takeover", netAmount: 5000000, grossAmount: 6000000 },
+    { lineItemId: "LI-007-B", lineItemName: "Surface Launch - Video Suite", product: "Video Pre-roll", netAmount: 4500000, grossAmount: 5400000 },
+  ],
+  "INV-008": [
+    { lineItemId: "LI-008-A", lineItemName: "Holiday Cheer - Display 300x600", product: "Display Standard", netAmount: 1200000, grossAmount: 1440000 },
+    { lineItemId: "LI-008-B", lineItemName: "Holiday Cheer - Native Placement", product: "Native Article", netAmount: 1000000, grossAmount: 1200000 },
+    { lineItemId: "LI-008-C", lineItemName: "Holiday Cheer - Newsletter", product: "Newsletter", netAmount: 1000000, grossAmount: 1200000 },
+  ],
+  "INV-009": [
+    { lineItemId: "LI-009-A", lineItemName: "Brand Safety - Programmatic Display", product: "Programmatic Display", netAmount: 4100000, grossAmount: 4920000 },
+    { lineItemId: "LI-009-B", lineItemName: "Brand Safety - Programmatic Video", product: "Programmatic Video", netAmount: 3500000, grossAmount: 4200000 },
+  ],
+  "INV-010": [
+    { lineItemId: "LI-010-A", lineItemName: "Valentine's Day - Display Package", product: "Display Standard", netAmount: 850000, grossAmount: 1020000 },
+    { lineItemId: "LI-010-B", lineItemName: "Valentine's Day - Sponsored Content", product: "Sponsored Content", netAmount: 1000000, grossAmount: 1200000 },
+  ],
+  "INV-011": [
+    { lineItemId: "LI-011-A", lineItemName: "Luxury Auto Q1 - Display Premium", product: "Display Premium", netAmount: 2000000, grossAmount: 2400000 },
+    { lineItemId: "LI-011-B", lineItemName: "Luxury Auto Q1 - Video Pre-roll", product: "Video Pre-roll", netAmount: 1500000, grossAmount: 1800000 },
+    { lineItemId: "LI-011-C", lineItemName: "Luxury Auto Q1 - Native Content", product: "Native Article", netAmount: 950000, grossAmount: 1140000 },
+  ],
+  "INV-012": [
+    { lineItemId: "LI-012-A", lineItemName: "Sustainability - Programmatic Display", product: "Programmatic Display", netAmount: 3400000, grossAmount: 4080000 },
+    { lineItemId: "LI-012-B", lineItemName: "Sustainability - Programmatic Native", product: "Programmatic Native", netAmount: 2500000, grossAmount: 3000000 },
+  ],
+  "INV-013": [
+    { lineItemId: "LI-013-A", lineItemName: "Pixel Launch - Takeover", product: "Homepage Takeover", netAmount: 5500000, grossAmount: 6600000 },
+    { lineItemId: "LI-013-B", lineItemName: "Pixel Launch - Video Suite", product: "Video Pre-roll", netAmount: 3200000, grossAmount: 3840000 },
+    { lineItemId: "LI-013-C", lineItemName: "Pixel Launch - Newsletter Blast", product: "Newsletter", netAmount: 2500000, grossAmount: 3000000 },
+  ],
+  "INV-014": [
+    { lineItemId: "LI-014-A", lineItemName: "Summer Fitness - Programmatic Display", product: "Programmatic Display", netAmount: 1850000, grossAmount: 2220000 },
+    { lineItemId: "LI-014-B", lineItemName: "Summer Fitness - Programmatic Video", product: "Programmatic Video", netAmount: 1500000, grossAmount: 1800000 },
+  ],
+  "INV-015": [
+    { lineItemId: "LI-015-A", lineItemName: "Spring Deals - Display ROS", product: "Display Standard", netAmount: 2500000, grossAmount: 3000000 },
+    { lineItemId: "LI-015-B", lineItemName: "Spring Deals - Sponsored Content", product: "Sponsored Content", netAmount: 2100000, grossAmount: 2520000 },
+    { lineItemId: "LI-015-C", lineItemName: "Spring Deals - Social", product: "Social", netAmount: 1500000, grossAmount: 1800000 },
+  ],
+  "INV-016": [
+    { lineItemId: "LI-016-A", lineItemName: "Beauty Awards - Display Premium", product: "Display Premium", netAmount: 1280000, grossAmount: 1536000 },
+    { lineItemId: "LI-016-B", lineItemName: "Beauty Awards - Video", product: "Video Pre-roll", netAmount: 1500000, grossAmount: 1800000 },
+  ],
+  "INV-017": [
+    { lineItemId: "LI-017-A", lineItemName: "Galaxy S25 - Takeover Package", product: "Homepage Takeover", netAmount: 6000000, grossAmount: 7200000 },
+    { lineItemId: "LI-017-B", lineItemName: "Galaxy S25 - Video Pre-roll", product: "Video Pre-roll", netAmount: 4500000, grossAmount: 5400000 },
+    { lineItemId: "LI-017-C", lineItemName: "Galaxy S25 - Native Reviews", product: "Native Article", netAmount: 2500000, grossAmount: 3000000 },
+    { lineItemId: "LI-017-D", lineItemName: "Galaxy S25 - Newsletter", product: "Newsletter", netAmount: 1500000, grossAmount: 1800000 },
+  ],
+  "INV-018": [
+    { lineItemId: "LI-018-A", lineItemName: "Super Bowl - Premium Takeover", product: "Homepage Takeover", netAmount: 10000000, grossAmount: 12000000 },
+    { lineItemId: "LI-018-B", lineItemName: "Super Bowl - Video Package", product: "Video Pre-roll", netAmount: 7000000, grossAmount: 8400000 },
+    { lineItemId: "LI-018-C", lineItemName: "Super Bowl - Social Amplification", product: "Social", netAmount: 5000000, grossAmount: 6000000 },
+  ],
+  "INV-019": [
+    { lineItemId: "LI-019-A", lineItemName: "Wrapped Campaign - Programmatic Display", product: "Programmatic Display", netAmount: 950000, grossAmount: 1140000 },
+    { lineItemId: "LI-019-B", lineItemName: "Wrapped Campaign - Programmatic Audio", product: "Programmatic Audio", netAmount: 1000000, grossAmount: 1200000 },
+  ],
+  "INV-020": [
+    { lineItemId: "LI-020-A", lineItemName: "Cybertruck - Display Premium", product: "Display Premium", netAmount: 3500000, grossAmount: 4200000 },
+    { lineItemId: "LI-020-B", lineItemName: "Cybertruck - Video Suite", product: "Video Pre-roll", netAmount: 3400000, grossAmount: 4080000 },
+    { lineItemId: "LI-020-C", lineItemName: "Cybertruck - Sponsored Content", product: "Sponsored Content", netAmount: 2000000, grossAmount: 2400000 },
+  ],
+};
 
 export const creditRequests: CreditRequest[] = [
   {
