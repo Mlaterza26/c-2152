@@ -13,37 +13,37 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       label: "Total Invoices",
       value: stats.totalInvoices.toLocaleString(),
       icon: FileText,
-      color: "text-blue-600 bg-blue-50",
+      color: "text-deep-blue bg-deep-blue/10",
     },
     {
       label: "Net Amount",
       value: formatCurrency(stats.totalNetAmount),
       icon: DollarSign,
-      color: "text-green-600 bg-green-50",
+      color: "text-emerald-700 bg-emerald-50",
     },
     {
       label: "Pending Requests",
       value: stats.pendingRequests.toString(),
       icon: Clock,
-      color: "text-yellow-600 bg-yellow-50",
+      color: "text-amber-700 bg-amber-50",
     },
     {
       label: "Completed Requests",
       value: stats.completedRequests.toString(),
       icon: CheckCircle,
-      color: "text-emerald-600 bg-emerald-50",
+      color: "text-emerald-700 bg-emerald-50",
     },
     {
       label: "Unlocked Invoices",
       value: stats.unlockedInvoices.toString(),
       icon: Unlock,
-      color: "text-orange-600 bg-orange-50",
+      color: "text-future-red bg-future-red/10",
     },
     {
       label: "Advertisers",
       value: stats.uniqueAdvertisers.toString(),
       icon: Users,
-      color: "text-purple-600 bg-purple-50",
+      color: "text-electric-blue bg-electric-blue/10",
     },
   ];
 

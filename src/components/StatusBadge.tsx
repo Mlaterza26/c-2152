@@ -6,17 +6,17 @@ type RequestStatus = "pending" | "in_progress" | "completed" | "rejected";
 type LockStatus = "unlocked" | "locked";
 
 const reviewStatusStyles: Record<ReviewStatus, string> = {
-  None: "bg-gray-100 text-gray-700 border-gray-200",
-  Pending: "bg-yellow-50 text-yellow-700 border-yellow-200",
-  Approved: "bg-green-50 text-green-700 border-green-200",
-  Rejected: "bg-red-50 text-red-700 border-red-200",
+  None: "bg-neutral-grey/20 text-future-blue border-neutral-grey/40",
+  Pending: "bg-amber-50 text-amber-800 border-amber-200",
+  Approved: "bg-emerald-50 text-emerald-800 border-emerald-200",
+  Rejected: "bg-red-50 text-future-red border-red-200",
 };
 
 const requestStatusStyles: Record<RequestStatus, string> = {
-  pending: "bg-yellow-50 text-yellow-700 border-yellow-200",
-  in_progress: "bg-blue-50 text-blue-700 border-blue-200",
-  completed: "bg-green-50 text-green-700 border-green-200",
-  rejected: "bg-red-50 text-red-700 border-red-200",
+  pending: "bg-amber-50 text-amber-800 border-amber-200",
+  in_progress: "bg-blue-50 text-deep-blue border-blue-200",
+  completed: "bg-emerald-50 text-emerald-800 border-emerald-200",
+  rejected: "bg-red-50 text-future-red border-red-200",
 };
 
 const requestStatusLabels: Record<RequestStatus, string> = {
@@ -28,7 +28,7 @@ const requestStatusLabels: Record<RequestStatus, string> = {
 
 const lockStatusStyles: Record<LockStatus, string> = {
   unlocked: "bg-orange-50 text-orange-700 border-orange-200",
-  locked: "bg-slate-100 text-slate-600 border-slate-200",
+  locked: "bg-neutral-grey/20 text-future-blue/70 border-neutral-grey/40",
 };
 
 export function ReviewStatusBadge({ status }: { status: ReviewStatus }) {

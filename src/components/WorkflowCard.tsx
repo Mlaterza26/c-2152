@@ -20,12 +20,12 @@ export default function WorkflowCard({ workflow }: WorkflowCardProps) {
 
   return (
     <Card
-      className={`transition-shadow ${hasRoute ? "hover:shadow-md cursor-pointer" : "opacity-75"}`}
+      className={`transition-all duration-200 ${hasRoute ? "hover:shadow-md hover:border-future-red/30 cursor-pointer" : "opacity-75"}`}
       onClick={hasRoute ? handleClick : undefined}
     >
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
-          <div className="p-3 rounded-lg bg-primary/10 text-primary shrink-0">
+          <div className="p-3 rounded-lg bg-future-red/10 text-future-red shrink-0">
             <workflow.icon className="h-6 w-6" />
           </div>
           <div className="flex-1 min-w-0">

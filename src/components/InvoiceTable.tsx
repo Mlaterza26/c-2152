@@ -116,7 +116,7 @@ export default function InvoiceTable() {
                           variant="outline"
                           size="sm"
                           onClick={() => setCreditInvoice(inv)}
-                          className="text-xs transition-all duration-200 hover:bg-red-500 hover:text-white hover:border-red-500 hover:scale-105"
+                          className="text-xs transition-all duration-200 hover:bg-future-red hover:text-white hover:border-future-red hover:scale-105"
                         >
                           <CreditCard className="h-3.5 w-3.5 mr-1" />
                           Credit
