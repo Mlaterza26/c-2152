@@ -11,6 +11,7 @@ import RevenueCreditWorkflow from "./pages/RevenueCreditWorkflow";
 import Requests from "./pages/Requests";
 import NotFound from "./pages/NotFound";
 import FutureLogo from "@/components/FutureLogo";
+import ProcessAssistant from "@/components/ProcessAssistant";
 
 const queryClient = new QueryClient();
 
@@ -34,9 +35,10 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
-              <div className="fixed bottom-4 right-4 z-10">
+              <div className="fixed bottom-4 left-4 z-10">
                 <FutureLogo className="h-5 text-neutral-grey" />
               </div>
+              <ProcessAssistant />
             </main>
           </div>
         </div>

@@ -64,3 +64,16 @@
     line-height: 0.9;
   }
 }
+
+@keyframes help-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(167, 25, 48, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 24px rgba(167, 25, 48, 0.6), 0 0 0 8px rgba(167, 25, 48, 0.1);
+  }
+}
+
+.animate-help-pulse {
+  animation: help-pulse 2s ease-in-out 3;
+}
